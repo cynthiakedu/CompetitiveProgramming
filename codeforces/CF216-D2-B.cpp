@@ -2,8 +2,28 @@
 using namespace std;
 vector<int> adjList[105];
 int arr[105] = {};
+bool vis[105];
 int N, M;
 int ans = 0;
+int rt;
+bool hasCycle = false;
+int ct = 0, numOdd = 0, mnOddSize = INT_MAX;
+
+void dfs(int x, int p = -1) {
+    if (vis[x]) {
+        if (x == rt && rt != p) {
+            hasCycle = true;
+        }
+        return;
+    }
+    vis[x] = true;
+    ct++;
+    for (auto y : adjList[x]) {
+        if (y == p) continue;
+        dfs(y, x);
+    }
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -14,28 +34,19 @@ int main() {
         adjList[y].push_back(x);
     }
     for (int i = 1; i <= N; i++) {
-        if (arr[i] == 0) {
-            arr[i] = 1;
-            if (adjList[i].size() == 2) {
-                int a = adjList[i][0], b = adjList[i][1];
-                if (find(adjList[a].begin(), adjList[a].begin(), b) != adjList[a].end()) {
-                    arr[a] = 2;
-                    arr[b] = -1;
-                    ans++;
-                } else {
-                    arr[a] = 2;
-                    arr[b] = 2;
-                }
-            } else if (adjList[i].size() == 1) {
-                arr[adjList[i][0]] = 2;
-            }
-        } else if (arr[i] != -1) {
-            if (adjList[i].size() == 1) {
-                arr[adjList[i][0]] = 3 - arr[i];
-            }
+        if (vis[i]) continue;
+        ct = 0;
+        rt = i;
+        hasCycle = false;
+        dfs(i);
+        if (hasCycle && ct % 2 == 1) {
+            ans++;
+        } else if (ct % 2 == 1) {
+            numOdd++;
         }
     }
-    cout << ans << endl;
+
+    cout << ans + (numOdd % 2 == 1 ? 1 : 0) << endl;
 
     return 0;
 }

@@ -1,3 +1,5 @@
 a.out
 .vscode
 ./command
+.DS_Store
+try.cpp

@@ -16,31 +16,26 @@ int main() {
             if (arr[i][j] == '#') amt[j]++;
         }
     }
-    for (int i = M + 1; i >= 1; i--) {
+    for (int i = M + 1; i >= 2; i--) {
         for (int j = Y; j >= 0; j--) {
             if (i == M + 1) {
-                dp[i][j][1] = (j == 0 || j >= X) ? 0 : INT_MAX;
+                dp[i][j][1] = j >= X ? 0 : INT_MAX;
                 dp[i][j][0] = j >= X ? 0 : INT_MAX;
                 continue;
             }
-            dp[i][j][0] = INT_MAX;
-            dp[i][j][1] = INT_MAX;
-            if ((X <= j && j <= Y)) {
-                dp[i][j][1] = min(dp[i][j][1], amt[i] + dp[i + 1][0][1]);
-                dp[i][j][0] = min(dp[i][j][0], amt[i] + dp[i + 1][0][1]);
-            }
-            if (j == 0) {
-                dp[i][j][1] = min(dp[i][j][1], amt[i] + dp[i + 1][0][1]);
-                dp[i][j][0] = min(dp[i][j][0], amt[i] + dp[i + 1][0][0]);
+            dp[i][j][0] = INT_MAX;  //prev col #
+            dp[i][j][1] = INT_MAX;  //prev col .
+            if (X <= j && j <= Y) {
+                dp[i][j][0] = min(dp[i][j][0], amt[i] + dp[i + 1][1][1]);
+                dp[i][j][1] = min(dp[i][j][1], N - amt[i] + dp[i + 1][1][0]);
             }
             if (j < Y) {
-                dp[i][j][1] = min(dp[i][j][1], (N - amt[i]) + dp[i + 1][j + 1][1]);
-                dp[i][j][0] = min(dp[i][j][0], (N - amt[i]) + dp[i + 1][j + 1][0]);
+                dp[i][j][0] = min(dp[i][j][0], N - amt[i] + dp[i + 1][j + 1][0]);
+                dp[i][j][1] = min(dp[i][j][1], amt[i] + dp[i + 1][j + 1][1]);
             }
-            // cout << i << " " << j << " " << dp[i][j] << endl;
         }
     }
-    cout << dp[1][0][0] << endl;
+    cout << min(N - amt[1] + dp[2][1][0], amt[1] + dp[2][1][1]) << endl;
 
     return 0;
 }

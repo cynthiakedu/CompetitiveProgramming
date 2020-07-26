@@ -8,6 +8,11 @@ int main() {
 
     cin >> a >> b >> c >> d;
     x = a, y = c;
+
+    if (c < a) {
+        cout << a << endl;
+        return 0;
+    }
     for (int i = 0; i < 200005; i++) {
         if (i % 2 == 0) {
             if (x + b > y) {
