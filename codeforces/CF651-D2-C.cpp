@@ -25,7 +25,6 @@ int main() {
         ans += (p.second * (p.second - 1)) / 2;
     }
     for (auto p : s) {
-        if (p.second < 2) continue;
         ans -= (p.second * (p.second - 1) / 2);
     }
     cout << ans << endl;
