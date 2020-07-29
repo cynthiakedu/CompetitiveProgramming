@@ -13,8 +13,8 @@ int main() {
     cin >> N >> M;
     for (int i = 1, l, r; i <= M; i++) {
         cin >> l >> r >> x[i];
-        V.push_back(ii(l, -i));
-        V.push_back(ii(r, i));
+        V.push_back(ii(l, -(M+1-i)));
+        V.push_back(ii(r, M+1-i));
     }
     for (int i = 1; i <= N; i++) {
         while (idxV < V.size() && V[idxV].first == i && V[idxV].second < 0) {
