@@ -10,5 +10,6 @@ int main() {
     r = max(r, 3);
     cout << r << endl;
     cout << dp[0][1] << endl;
+    cout << (-1) % 2 << endl;
     return 0;
 }
