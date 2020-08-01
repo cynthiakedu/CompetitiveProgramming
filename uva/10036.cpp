@@ -23,7 +23,7 @@ int main() {
         for (int i = 0; i < N; i++) {
             vector<bool> ne(105, false);
             for (int j = 0; j < K; j++) {
-                ne[j] = dp[(j - arr[i] + K) % K] || dp[(j - (K - arr[i]) + 2 * K) % K];
+                ne[j] = dp[(j - arr[i] + K) % K] || dp[(j + arr[i]) % K];
             }
             dp = ne;
         }

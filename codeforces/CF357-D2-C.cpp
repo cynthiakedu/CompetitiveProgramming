@@ -1,44 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> ii;
-int N, M, x[300005], ans[300005];
+#define ll long long
+#define ii pair<int, int>
 
-vector<ii> V;
-set<ii> S;
-int idxV = 0;
+int N;
+vector<int> divs;
+int arr[100005];
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cin >> N >> M;
-    for (int i = 1, l, r; i <= M; i++) {
-        cin >> l >> r >> x[i];
-        V.push_back(ii(l, -(M+1-i)));
-        V.push_back(ii(r, M+1-i));
-    }
-    for (int i = 1; i <= N; i++) {
-        while (idxV < V.size() && V[idxV].first == i && V[idxV].second < 0) {
-            S.insert(V[idxV]);
-            idxV++;
-        }
-        vector<ii> v;
-        while (S.size()) {
-            ii p = *S.begin();
-            S.erase(p);
-            v.push_back(p);
-            if (x[p.second] != i) {
-                ans[i] = p.second;
-                break;
+
+    cin >> N;
+    for (int i = 0; i < N; i++) cin >> arr[i];
+
+    for (int i = 3; i <= N; i++) {
+        if (N % i == 0) {
+            vector<int> v(N / i, 0);
+            for (int j = 0; j < N; j++) {
+                v[j % (N / i)] += arr[j];
+            }
+            for (int j = 0; j < N / i; j++) {
+                if (v[j] == i) {
+                    cout << "YES" << endl;
+                    return 0;
+                }
             }
         }
-        for (auto p : v) S.insert(p);
-
-        while (idxV < V.size() && V[idxV].first == i && V[idxV].second > 0) {
-            S.erase(ii(V[idxV].first, -V[idxV].second));
-            idxV++;
-        }
     }
-    for (int i = 1; i <= N; i++) cout << ans[i] << (i == N ? "\n" : " ");
+    cout << "NO" << endl;
 
     return 0;
 }
