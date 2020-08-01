@@ -10,8 +10,7 @@ int main() {
     while (true) {
         cin >> N;
         if (N == 0) return 0;
-
-        cout << N - 1 << "/" << N << endl;
+        cout << "1/2" << endl;
     }
 
     return 0;
