@@ -40,6 +40,7 @@ int main() {
     cin.tie(NULL);
     cin >> T;
     getline(cin, line1);
+    getline(cin, line1);
     for (int t = 0; t < T; t++) {
         for (int i = 0; i < 25; i++) adj[i].clear();
         vis.clear();
@@ -63,7 +64,19 @@ int main() {
         if (ct == 0) {
             cout << "NO" << endl;
         }
+        if (t < T - 1) {
+            getline(cin, line1);
+
+            cout << endl;
+        }
     }
 
     return 0;
 }
+
+// 2
+// A B F G
+// A<B B<F
+
+// A B F G
+// A<B B<F
