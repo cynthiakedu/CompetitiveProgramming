@@ -13,6 +13,10 @@ int main() {
         cout << -1 << endl;
         return 0;
     }
+    if (N == 1) {
+        cout << 1 << endl;
+        return 0;
+    }
     ans.push_back(1);
     if (B == 0) ans.push_back(1);
     int s = 1;

@@ -31,14 +31,18 @@ int main() {
         cin >> a3 >> b3 >> a4 >> b4;
         double angle1 = ang(a2, b2, a1, b1, a3, b3) * 180 / PI;
         double angle2 = ang(a4, b4, a3, b3, a1, b1) * 180 / PI;
-        if (angle2 - angle1 > -EPS) {
+        if (angle2 > angle1) {
             if (fabs(angle2 - angle1) < EPS) {
                 cout << 0 << endl;
             } else {
                 cout << "Hero" << endl;
             }
         } else {
-            cout << "Heroine" << endl;
+            if (fabs(angle2 - angle1) < EPS) {
+                cout << 0 << endl;
+            } else {
+                cout << "Heroine" << endl;
+            }
         }
     }
 
