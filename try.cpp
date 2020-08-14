@@ -10,12 +10,15 @@ int main() {
     // int y1 = 0;
     // cout << y1 << endl;
 
-    set<int> S;
-    S.insert(30);
-    S.insert(20);
-    S.insert(10);
-    int pos = (S.lower_bound(20) - S.begin());
-    cout << pos << endl;
+    // set<int> S;
+    // S.insert(30);
+    // S.insert(20);
+    // S.insert(10);
+    // int pos = (S.lower_bound(20) - S.begin());
+    // cout << pos << endl;
+
+    string s = "abc";
+    cout << s.substr(2, 3) << endl;
 
     // int dp[3][2];
     // int &r = dp[0][1];
