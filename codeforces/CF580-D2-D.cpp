@@ -13,13 +13,6 @@ ll solve(ll b, ll j) {
         return dp[b][j];
     }
     if (j == 0) return 0;
-    int ct = 0;
-    for (int k = 0; k < N; k++) {
-        if (j & (1 << k)) {
-            ct++;
-        }
-    }
-    dp[b][j] = 0;
 
     for (int k = 0; k < N; k++) {
         if (j & (1 << k)) {
