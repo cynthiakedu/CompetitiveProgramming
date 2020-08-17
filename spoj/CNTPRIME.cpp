@@ -2,67 +2,69 @@
 using namespace std;
 #define ll long long
 #define ii pair<int, int>
-#define T (1 << 17)
+#define T (8)
 set<int> primes;
 bool vis[1000005];
 int t, N, Q;
 
-ii tree[2 * T];
+int tree[2 * T];
+int prime[2 * T];  // if this is 0, then isMixed = true
 
 int query(int a, int b, int l = 0, int r = T - 1, int p = 1) {
-    if (p < T) {
-        tree[2 * p].second = tree[p].second;
-        tree[2 * p + 1].second = tree[p].second;
-    }
-    if (tree[p].second > 0) {
-        tree[p].first = (primes.count(tree[p].second) ? 1 : 0) * (r - l + 1);
-        tree[p].second = 0;
-    }
+    // cout << "query" << endl;
+    // cout << "query " << a << " " << b << " " << l << " " << r << " " << p << endl;
+    if (b < l || a > r) return 0;  //no intersection
 
-    if (a <= l && r <= b) {
-        return tree[p].first;
+    if (a <= l && r <= b && prime[p]) {
+        tree[p] = (r - l + 1) * (primes.count(prime[p]) ? 1 : 0);
+        // cout << "visiting " << p << " " << tree[p] << endl;
+
+        return tree[p];
     }
 
     int m = (l + r) / 2;
-    if (b <= m) return query(a, b, l, m, 2 * p);
-    if (a > m) return query(a, b, m + 1, r, 2 * p + 1);
 
-    return query(a, b, l, m, 2 * p) + query(a, b, m + 1, r, 2 * p + 1);
-}
+    if (prime[p]) {
+        prime[2 * p] = prime[2 * p + 1] = prime[p];
+    }
+    int x = query(a, b, l, m, 2 * p);
+    int y = query(a, b, m + 1, r, 2 * p + 1);
 
-void prop(int l, int r, int p) {
-    if (p < T) {
-        tree[2 * p].second = tree[p].second;
-        tree[2 * p + 1].second = tree[p].second;
+    if (!prime[2 * p] || !prime[2 * p + 1] || prime[2 * p] != prime[2 * p + 1]) {
+        prime[p] = 0;
     }
-    if (tree[p].second > 0) {
-        tree[p].first = (primes.count(tree[p].second) ? 1 : 0) * (r - l + 1);
-        tree[p].second = 0;
-    }
+    // cout << "tree[p] query " << p << " " << x + y << endl;
+    tree[p] = tree[2 * p] + tree[2 * p + 1];
+    return x + y;
 }
 
 void update(int a, int b, int v, int l = 0, int r = T - 1, int p = 1) {
-    prop(l, r, p);
+    // cout << "update" << endl;
+    // cout << "query " << a << " " << b << " " << l << " " << r << " " << p << endl;
+
+    if (b < l || a > r) return;  //no intersection
 
     if (a <= l && r <= b) {
-        tree[p].second = v;
+        prime[p] = v;
+        tree[p] = (r - l + 1) * (primes.count(prime[p]) ? 1 : 0);
         return;
     }
 
     int m = (l + r) / 2;
-    if (b <= m) {
-        update(a, b, v, l, m, 2 * p);
-    } else if (a > m) {
-        update(a, b, v, m + 1, r, 2 * p + 1);
-    } else {
-        update(a, b, v, l, m, 2 * p);
-        update(a, b, v, m + 1, r, 2 * p + 1);
+
+    if (prime[p]) {
+        prime[2 * p] = prime[2 * p + 1] = prime[p];
     }
-    if (p < T) {
-        prop(l, m, 2 * p);
-        prop(m + 1, r, 2 * p + 1);
-        tree[p].first = tree[2 * p].first + tree[2 * p + 1].first;
+    update(a, b, v, l, m, 2 * p);
+    update(a, b, v, m + 1, r, 2 * p + 1);
+
+    if (!prime[2 * p] || !prime[2 * p + 1] || prime[2 * p] != prime[2 * p + 1]) {
+        prime[p] = 0;
     }
+    tree[p] = tree[2 * p] + tree[2 * p + 1];
+    // cout << "p after " << p << " " << tree[p] << " " << prime[p] << endl;
+    // cout << "what about 6 "
+    //      << " " << tree[6] << " " << prime[6] << endl;
 }
 
 int main() {
@@ -85,15 +87,22 @@ int main() {
         for (int i = 1; i <= N; i++) {
             int x;
             cin >> x;
-            tree[i + T].first = primes.count(x) > 0;
+            tree[i + T] = primes.count(x) > 0 ? 1 : 0;
+            prime[i + T] = x;
         }
         for (int i = T - 1; i >= 0; i--) {
-            tree[i].first = tree[2 * i].first + tree[2 * i + 1].first;
+            tree[i] = tree[2 * i] + tree[2 * i + 1];
+            if (prime[2 * i] && prime[2 * i + 1] && prime[2 * i] == prime[2 * i + 1]) {
+                prime[i] = prime[2 * i];
+            }
         }
+        // cout << "count 9 " << tree[9] << " " << tree[10] << " " << tree[11] << " " << tree[5] << " " << tree[2] << endl;
 
         for (int q = 0; q < Q; q++) {
+            // cout << "q " << q << endl;
             int type, x, y, v;
             cin >> type >> x >> y;
+            // cout << "type " << type << endl;
             if (type == 0) {
                 cin >> v;
                 update(x, y, v);
@@ -101,6 +110,7 @@ int main() {
                 cout << query(x, y) << "\n\n";
             }
         }
+        // cout << "done" << endl;
     }
 
     return 0;
@@ -115,3 +125,17 @@ int main() {
 // 1 1 2
 
 // 0 4 4 5
+
+// 1
+// 5 4
+// 2 4 3 5 6
+// 1 1 3
+// 1 2 4
+// 0 2 4 3
+// 1 1 3
+
+// 1
+// 5 2
+// 2 4 4 4 6
+// 0 3 5 3
+// 1 2 4

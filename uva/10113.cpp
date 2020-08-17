@@ -58,11 +58,3 @@ int main() {
 
     return 0;
 }
-
-// ! 6 shirt = 15 sock
-// ! 47 underwear = 9 pant
-// ? sock = shirt
-// ? shirt = pant
-// ! 2 sock = 1 underwear
-// ? pant = shirt
-// .

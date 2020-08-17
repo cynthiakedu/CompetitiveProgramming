@@ -50,11 +50,3 @@ int main() {
 
     return 0;
 }
-
-// 3 6
-// A B
-// A B
-// A B
-// A C
-// B C
-// d C
