@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 #define ii pair<int, int>
-#define T (8)
+#define T ((1 << 17))
 set<int> primes;
 bool vis[1000005];
 int t, N, Q;
