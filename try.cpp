@@ -4,6 +4,11 @@ using namespace std;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    int x = 3;
+    int y = 2;
+    x += 2, y -= 1;
+    int z = 3;
+    cout << "x y " << x << " " << y << endl;
     // cout << (-2) % 3 << endl;
     // cout << ((-4) & 1) << endl;
     // cout << cos(1.00000000001) << endl;
