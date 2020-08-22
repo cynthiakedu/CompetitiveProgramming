@@ -12,28 +12,41 @@ bool isValid(int x, int y) {
     return true;
 }
 
-bool dfs(int x, int y) {
-    // cout << "x y " << x << " " << y << endl;
-    arr[x][y] = 'X';
-    if (x == r2 && y == c2) return true;
-    bool ans = false;
+vector<ii> getNeigh(int x, int y) {
+    vector<ii> v;
     vector<int> dx = {-1, 0, 1, 0};
     vector<int> dy = {0, -1, 0, 1};
     for (int i = 0; i < 4; i++) {
         int x0 = x + dx[i], y0 = y + dy[i];
-        // cout << "potential " << x0 << " " << y0 << endl;
-        if (isValid(x0, y0)) {
-            if (arr[x0][y0] == 'X') {
-                if (x0 == r2 && y0 == c2)
-                    return true;
-                else
-                    continue;
-            }
+        v.push_back({x0, y0});
+    }
+    return v;
+}
 
-            ans |= dfs(x0, y0);
+bool solve() {
+    queue<ii> q;
+    q.push({r1, c1});
+    map<ii, int> dist;
+    dist[{r1, c1}] = 0;
+    while (!q.empty()) {
+        ii u = q.front();
+        q.pop();
+        arr[u.first][u.second] = 'X';
+        for (auto v : getNeigh(u.first, u.second)) {
+            if (v.first == r2 && v.second == c2) {
+                if (arr[r2][c2] == 'X') return true;
+                for (auto v1 : getNeigh(r2, c2)) {
+                    if (arr[v1.first][v1.second] == '.') return true;
+                }
+                return false;
+            }
+            if (dist.count(v) == 0 && arr[v.first][v.second] == '.') {
+                q.push(v);
+                dist[v] = dist[u] + 1;
+            }
         }
     }
-    return ans;
+    return false;
 }
 
 int main() {
@@ -47,6 +60,7 @@ int main() {
         }
     }
     cin >> r1 >> c1 >> r2 >> c2;
-    cout << (dfs(r1, c1) ? "YES" : "NO") << endl;
+
+    cout << (solve() ? "YES" : "NO") << endl;
     return 0;
 }

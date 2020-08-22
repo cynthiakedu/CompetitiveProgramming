@@ -11,12 +11,12 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // freopen("./output.txt", "w", stdout);
     while ((cin >> N) && (cin >> E)) {
         for (int i = 0; i < 105; i++) {
             for (int j = 0; j < 105; j++) {
                 adj[i][j] = -1.0;
-                adj2[i][j] = 55;
+                adj2[i][j] = -1.0;
             }
         }
         cin >> S >> T;
