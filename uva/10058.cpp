@@ -15,7 +15,6 @@ bool isNoun(string x) {
 }
 
 bool isVerb(string x) {
-    // cout << "isVerb" << endl;
     if (verbs.count(x) > 0) return true;
     if (x.size() == 0) return false;
     if (x[x.size() - 1] != 's') return false;
@@ -23,10 +22,6 @@ bool isVerb(string x) {
 }
 
 bool isActor(vector<string> v) {
-    // cout << "isActor" << endl;
-    // for (auto x : v) {
-    //     cout << "actor " << x << endl;
-    // }
     int sz = (int)v.size();
     if (sz == 1) {
         return isNoun(v[0]);
@@ -37,10 +32,6 @@ bool isActor(vector<string> v) {
 }
 
 bool isActiveList(vector<string> v) {
-    // cout << "isActiveList" << endl;
-    // for (auto x : v) {
-    //     cout << "check " << x << endl;
-    // }
     if (isActor(v)) return true;
     for (int i = 1; i < (int)v.size() - 1; i++) {
         if (v[i] != "and") continue;
@@ -53,7 +44,6 @@ bool isActiveList(vector<string> v) {
 }
 
 bool isAction(vector<string> v) {
-    // cout << "isAction" << endl;
     for (int i = 1; i < (int)v.size() - 1; i++) {
         if (!isVerb(v[i])) continue;
         vector<string> v1(v.begin(), v.begin() + i);
@@ -65,7 +55,6 @@ bool isAction(vector<string> v) {
 }
 
 bool isStatement(vector<string> v) {
-    // cout << "isStatement " << endl;
     if (isAction(v)) return true;
     for (int i = 1; i < (int)v.size() - 1; i++) {
         if (v[i] != ",") continue;
