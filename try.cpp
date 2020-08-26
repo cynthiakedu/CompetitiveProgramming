@@ -10,14 +10,22 @@ map<int, int> m;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    cout << (-3) % 2 << endl;
+    int p = 5;
+    int inv[5] = {};
+    inv[1] = 1;
+    for (int i = 2; i < p; i++) {
+        inv[i] = (p - (p / i) * inv[p % i] % p) % p;
+        cout << "inv[i] " << i << " " << inv[i] << endl;
+    }
 
-    int arr[2][2];
-    arr[0][0] = 3;
-    arr[0][1] = 4;
-    arr[1][0] = 2;
-    arr[1][5] = 5;
-    sort(arr, arr + 2);
-    cout << arr[0][0] << endl;
+    // int arr[2][2];
+    // arr[0][0] = 3;
+    // arr[0][1] = 4;
+    // arr[1][0] = 2;
+    // arr[1][5] = 5;
+    // sort(arr, arr + 2);
+    // cout << arr[0][0] << endl;
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
 
@@ -37,7 +45,7 @@ int main() {
     //     }
     //     cout << ans << endl;
     // }
-    cout << (1 << 30) << endl;
+    // cout << (1 << 30) << endl;
 
     return 0;
 }
