@@ -6,7 +6,6 @@ int N, M;
 map<int, int> adj[305];
 int src, sink, mf, f;
 vector<int> p;
-int arr[305];
 
 void augment(int v, int minEdge) {
     if (v == src) {
@@ -31,7 +30,6 @@ int main() {
 
         for (int i = 1, x; i <= N; i++) {
             cin >> x;
-            arr[i] = x;
             if (x) {
                 adj[0][i] = 1;
             } else {

@@ -10,14 +10,19 @@ map<int, int> m;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cout << (-3) % 2 << endl;
-    int p = 5;
-    int inv[5] = {};
-    inv[1] = 1;
-    for (int i = 2; i < p; i++) {
-        inv[i] = (p - (p / i) * inv[p % i] % p) % p;
-        cout << "inv[i] " << i << " " << inv[i] << endl;
+    string s;
+    for (int i = 0; i < 2000; i++) {
+        s += 'q';
     }
+    cout << sizeof(s) << endl;
+    // cout << (-3) % 2 << endl;
+    // int p = 5;
+    // int inv[5] = {};
+    // inv[1] = 1;
+    // for (int i = 2; i < p; i++) {
+    //     inv[i] = (p - (p / i) * inv[p % i] % p) % p;
+    //     cout << "inv[i] " << i << " " << inv[i] << endl;
+    // }
 
     // int arr[2][2];
     // arr[0][0] = 3;
