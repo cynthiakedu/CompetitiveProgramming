@@ -7,14 +7,21 @@ const int mxN = 10e8;
 int N, M;
 map<int, int> m;
 
+int solve(int x) {
+    x++;
+    cout << x << endl;
+    return x;
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     string s;
-    for (int i = 0; i < 2000; i++) {
-        s += 'q';
-    }
-    cout << sizeof(s) << endl;
+    // for (int i = 0; i < 2000; i++) {
+    //     s += 'q';
+    // }
+    // cout << sizeof(s) << endl;
+    cout << "main " << solve(3) << endl;
     // cout << (-3) % 2 << endl;
     // int p = 5;
     // int inv[5] = {};

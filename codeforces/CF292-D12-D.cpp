@@ -4,8 +4,8 @@ using namespace std;
 #define ii pair<int, int>
 int N, M, K, E[10005][2];
 
-int p[2][1005][505];
-int ra[2][1005][505];
+int p[2][10005][505];
+int ra[2][10005][505];
 
 int findSet(int (&p1)[505], int x) {
     return (p1[x] == x ? x : p1[x] = findSet(p1, p1[x]));
@@ -18,7 +18,7 @@ void unionSet(int (&p1)[505], int (&r1)[505], int i, int j) {
         } else {
             p1[y] = x;
             if (r1[x] == r1[y]) {
-                r1[y]++;
+                r1[x]++;
             }
         }
     }
@@ -59,7 +59,7 @@ int main() {
     for (int t = 0, a, b; t < K; t++) {
         cin >> a >> b;
         vector<int> m[505];
-        int p1[505] = {}, r1[505] = {};
+        int p1[505], r1[505];
         bool isP[505] = {};
         for (int i = 1; i <= N; i++) {
             m[p[0][a - 1][i]].push_back(i);
@@ -67,10 +67,9 @@ int main() {
             r1[i] = ra[1][b + 1][i];
         }
         for (int i = 1; i <= N; i++) {
-            vector<int> num = m[i];
-            if (num.size() == 0) continue;
-            for (int i = 1; i < (int)num.size(); i++) {
-                unionSet(p1, r1, num[0], num[i]);
+            if (m[i].size() == 0) continue;
+            for (int j = 1; j < (int)m[i].size(); j++) {
+                unionSet(p1, r1, m[i][0], m[i][j]);
             }
         }
         for (int i = 1; i <= N; i++) {
