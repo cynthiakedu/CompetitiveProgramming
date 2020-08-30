@@ -5,13 +5,16 @@ using namespace std;
 int N;
 vector<int> adj[100005];
 double dp[100005];
+int ct[100005];
+double ans;
 
-void dfs(int u, int p = -1) {
+void dfs(int u, int c = 0, int p = -1) {
     dp[u] = 1;
+    ct[u] = 1;
+    ans += 1.0 / (c + 1);
     for (auto v : adj[u]) {
         if (v == p) continue;
-        dfs(v, u);
-        dp[u] += 0.5 * dp[v];
+        dfs(v, c + 1, u);
     }
 }
 
@@ -27,7 +30,7 @@ int main() {
     }
 
     dfs(1);
-    cout << setprecision(16) << dp[1] << endl;
+    cout << setprecision(16) << ans << endl;
 
     return 0;
 }
