@@ -12,14 +12,13 @@ int main() {
     while (true) {
         cin >> x;
         if (x <= C / 2) {
-            int i = 1;
-            while (i <= N)
+            for (int i = 1; i <= N; i++) {
                 if (arr[i] == -1 || x < arr[i]) {
                     arr[i] = x;
                     cout << i << endl;
                     break;
                 }
-            i++;
+            }
         } else {
             for (int i = N; i >= 1; i--) {
                 if (arr[i] == -1 || x > arr[i]) {
@@ -28,17 +27,17 @@ int main() {
                     break;
                 }
             }
-            bool ok = true;
-            for (int i = 1; i <= N; i++) {
-                if (arr[i] == -1) ok = false;
-            }
-            if (!ok) continue;
-            for (int i = 2; i <= N; i++) {
-                if (arr[i] < arr[i - 1]) ok = false;
-            }
-            if (!ok) continue;
-            return 0;
         }
+        bool ok = true;
+        for (int i = 1; i <= N; i++) {
+            if (arr[i] == -1) ok = false;
+        }
+        if (!ok) continue;
+        for (int i = 2; i <= N; i++) {
+            if (arr[i] < arr[i - 1]) ok = false;
+        }
+        if (!ok) continue;
+        return 0;
     }
 
     return 0;
