@@ -21,6 +21,7 @@ bool check(ll x) {
             cum[i] += y;
         }
         cum[i] += cum[i - 1];
+        if (cum[i] > K) return false;
     }
     return cum[N] <= K;
 }
