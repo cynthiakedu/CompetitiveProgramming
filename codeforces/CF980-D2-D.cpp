@@ -29,15 +29,14 @@ int main() {
         if (!ok) {
             nums[i] = counter++;
         }
-    }
-    for (int i = 1; i <= N; i++) {
-        int ct = 0, freq[5005] = {};
-        for (int j = i; j <= N; j++) {
-            if (freq[nums[j]] == 0) ct++;
-            ans[ct]++;
-            freq[nums[j]] = 1;
+        set<int> S;
+        for (int j = i; j >= 1; j--) {
+            int len = j - i + 1;
+            S.insert(nums[j]);
+            ans[(int)S.size()]++;
         }
     }
+
     for (int i = 1; i <= N; i++) cout << ans[i] << (i == N ? "\n" : " ");
 
     return 0;
