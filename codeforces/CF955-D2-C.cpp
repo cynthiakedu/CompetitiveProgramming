@@ -2,54 +2,48 @@
 using namespace std;
 #define ll long long
 #define ii pair<int, int>
+bool debug = true;
 int Q;
 ll L, R;
 
-ll p(ll a, ll b) {
-    if (b == 0) return 1;
-    ll z = p(a, b / 2);
-    return z * z * (b % 2 == 1 ? a : 1);
+ll ct(ll a, ll b, ll p) {
+    ll r = floor(pow((double)b, 1.0 / p));
+    ll l = floor(pow((double)(a - 1), 1.0 / p));
+    return r - l;
 }
 
-ll gcd(ll x, ll y) {
-    if (x == 0) return y;
-    return gcd(y % x, x);
-}
+vector<int> primes;
+bool vis[65];
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+    for (int i = 2; i < 65; i++) {
+        if (vis[i]) continue;
+        primes.push_back(i);
+        for (int j = i; j < 65; j += i) {
+            vis[j] = true;
+        }
+    }
+
     cin >> Q;
-    for (int i = 0; i < Q; i++) {
+    for (int q = 0; q < Q; q++) {
         cin >> L >> R;
-        int arr[130] = {};
         ll ans = 0;
-
-        for (ll i = 2; i <= 128; i++) {
-            ll a = ceil(pow((double)L, 1.0 / i));
-            ll b = floor(pow((double)R, 1.0 / i));
-            if (b >= a && b > 1) {
-                arr[i] = b - a + 1;
+        for (int i = 0; i < (1 << 18); i++) {
+            ll tmp = 0, mult = 1, amt = 0;
+            for (int j = 0; j < 18; j++) {
+                if (i & (1 << j)) {
+                    mult *= primes[j];
+                    amt++;
+                }
             }
-            // cout << "arr[i] " << i << " " << arr[i] << endl;
+            if (amt == 0) continue;
+            tmp = ct(L, R, mult) * (amt % 2 == 1 ? 1 : -1);
+            if (debug) cout << "temp " << i << " " << tmp << endl;
+            ans += tmp;
         }
-        ans = arr[2];
-        ll g = 2;
-        for (ll j = 3; j <= 64; j++) {
-            ans += arr[j];
-            // for (ll k = 64)
-            if (j <= 32) {
-                g = g * (j / gcd(g, j));
-            } else {
-            }
-            // g =
-            cout << "g " << g << endl;
-            if (g <= 128) {
-                ans -= arr[g];
-            }
-        }
-
-        cout << ans << endl;
     }
 
     return 0;
