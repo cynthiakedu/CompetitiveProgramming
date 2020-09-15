@@ -6,26 +6,20 @@ bool debug = false;
 int N, K;
 ll S, arr[30], fact[20], curr, ans;
 vector<int> nums[2];
-map<ii, int> v[2];
+map<ll, int> res[2][30];
 
-void solve(int idx, int num, int id) {
+void go(int idx, int num, int id, ll curr = 0) {
     if (curr > S) return;
+    if (num > K) return;
     if (idx == nums[id].size()) {
-        v[id][{curr, num}]++;
-        return;
+        res[id][num][curr]++;
+    } else {
+        go(idx + 1, num, id, curr);
+        go(idx + 1, num, id, curr + nums[id][idx]);
+        if (nums[id][idx] <= 19) {
+            go(idx + 1, num + 1, id, curr + fact[nums[id][idx]]);
+        }
     }
-    solve(idx + 1, num, id);
-
-    curr += nums[id][idx];
-    solve(idx + 1, num, id);
-    curr -= nums[id][idx];
-
-    if (num == 0) return;
-    if (nums[id][idx] >= 19) return;
-
-    curr += fact[nums[id][idx]];
-    solve(idx + 1, num - 1, id);
-    curr -= fact[nums[id][idx]];
 }
 
 int main() {
@@ -41,13 +35,15 @@ int main() {
     for (int i = 1; i <= N / 2; i++) nums[0].push_back(arr[i]);
     for (int i = N / 2 + 1; i <= N; i++) nums[1].push_back(arr[i]);
 
-    solve(0, K, 0);
-    solve(0, K, 1);
-    for (auto p : v[1]) {
-        if (debug) cout << p.first.first << " " << p.first.second << " " << p.second << endl;
-        for (int i = 0; i <= p.first.second; i++) {
-            if (v[0].count({S - p.first.first, K - i}) > 0) {
-                ans += v[0][{S - p.first.first, K - i}] * p.second;
+    go(0, 0, 0);
+    go(0, 0, 1);
+
+    for (int i = 0; i <= K; i++) {
+        for (int j = 0; j <= i; j++) {
+            for (auto p : res[0][j]) {
+                if (res[1][i - j].count(S - p.first)) {
+                    ans += p.second * res[1][i - j][S - p.first];
+                }
             }
         }
     }
