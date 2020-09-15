@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-#define ii pair<ll, int>
+
+typedef long long ll;
+typedef pair<ll, int> ii;
+
 bool debug = false;
 int N, K;
 ll S, arr[30], fact[20], curr, ans;
