@@ -7,9 +7,8 @@ typedef pair<int, int> ii;
 #define MXN 100005
 bool debug = false;
 
-int N, Q, arr[MXN];
+int N, Q, arr[MXN], dp[350][MXN];
 
-int dp[350][MXN];
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
@@ -25,7 +24,7 @@ int main() {
     }
     cin >> Q;
     for (int q = 0, k, p; q < Q; q++) {
-        cin >> p >> k;
+        cin >> p >> k;  //flipped the order
         if (k < sqrt(N)) {
             cout << dp[k][p] << "\n";
         } else {
