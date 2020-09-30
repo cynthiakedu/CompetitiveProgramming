@@ -1,58 +1,115 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-#define ii pair<int, int>
-const int mxN = 5e5;
-int N, R;
-ll K;
-ll arr[mxN + 5], arr2[mxN + 5];
+typedef long long ll;
+typedef pair<int, int> ii;
 
-bool check(ll x) {
-    ll v[mxN + 5] = {}, cum[mxN + 5] = {};
-    for (int i = 1; i <= N; i++) {
-        if (arr2[i] < x) {
-            v[i] = x - arr2[i];
-        }
+const int MXN = 5e5;
+ll MOD = 1e9 + 7;
+bool debug = false;
+
+int in[MXN], out[MXN], N;
+vector<int> adj[MXN];
+ll dp[MXN], dpIn[MXN], dpOut[MXN], f[MXN], ans;
+int numComp[MXN], inCycle[MXN];
+int p[MXN], r[MXN];
+
+void prepare() {
+    f[0] = 1;
+    for (ll i = 1; i < MXN; i++) f[i] = (f[i - 1] * i) % MOD;
+}
+
+void bad() {
+    cout << 0 << endl;
+    exit(0);
+}
+
+int findSet(int x) {
+    return p[x] == x ? x : p[x] = findSet(p[x]);
+}
+
+void unionSet(int i, int j) {
+    int x = findSet(i), y = findSet(j);
+    if (x == y) return;
+    if (r[x] < r[y])
+        p[x] = y;
+    else {
+        p[y] = x;
+        if (r[y] == r[x]) r[x]++;
     }
-    for (int i = 1; i <= N; i++) {
-        if (v[i] != 0) {
-            int l = max(0, i - (2 * R + 1));
-            ll y = max(0LL, v[i] - (cum[i - 1] - cum[l]));
-            cum[i] += y;
-        }
-        cum[i] += cum[i - 1];
+}
+
+void tryUnion(int a, int b, int u) {
+    if (debug) cout << "union " << a << " " << b << endl;
+    int a1 = findSet(a), b1 = findSet(b), c = findSet(u);
+    if (a1 == b1 && a1 != c) bad();
+    if (a1 == b1 && a1 == c) inCycle[u] = 1;
+    if (a1 != b1) numComp[u]--, unionSet(a1, b1);
+}
+
+void dfs(int u, int p = -1) {
+    dp[u] = 1, numComp[u] = 1;
+    map<int, int> inM, outM;
+
+    //Collect values
+    if (in[u]) inM[in[u]] = u;
+    if (out[u]) outM[u] = u;
+    for (int v : adj[u]) {
+        if (v == p) continue;
+        numComp[u]++;
+        dfs(v, u);
+        if (dpIn[v]) inM[dpIn[v]] = v;
+        if (dpOut[v]) outM[dpOut[v]] = v;
+        dp[u] = (dp[u] * dp[v]) % MOD;
     }
-    return cum[N] <= K;
+
+    //Check for external in/outs
+    for (auto p : inM) {
+        if (outM.count(p.first)) continue;
+        if (dpIn[u]) bad();
+        dpIn[u] = p.first;
+    }
+    for (auto p : outM) {
+        if (inM.count(p.first)) continue;
+        if (dpOut[u]) bad();
+        dpOut[u] = p.first;
+    }
+
+    //Union paths
+    for (auto p : outM) {
+        if (!inM.count(p.first)) continue;
+        tryUnion(inM[p.first], p.second, u);
+    }
+    if (dpIn[u] && dpOut[u]) tryUnion(inM[dpIn[u]], outM[dpOut[u]], u);
+    if (inCycle[u] && numComp[u] > 1) bad();
+    if (inCycle[u] && u != 1 && !(dpIn[u] || dpOut[u])) bad();
+
+    //Get answer
+    dp[u] = (dp[u] * f[numComp[u] - 1]) % MOD;
+    if (u == 1) ans = dp[u];
+    if (!dpIn[u] && !dpOut[u]) dp[u] = (dp[u] * (numComp[u])) % MOD;
+    if (debug) cout << "dp " << u << " " << dp[u] << endl;
+    if (debug) cout << "in/out = " << u << " " << dpIn[u] << " " << dpOut[u] << endl;
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    ll mx = 0;
-    cin >> N >> R >> K;
+    ios_base::sync_with_stdio(false), cin.tie(0);
+
+    prepare();
+
+    cin >> N;
+    for (int i = 1; i <= N; i++) p[i] = i;
+    for (int i = 0, u, v; i < N - 1; i++) {
+        cin >> u >> v;
+        adj[u].push_back(v), adj[v].push_back(u);
+    }
     for (int i = 1; i <= N; i++) {
-        cin >> arr[i];
-        mx = max(mx, arr[i]);
-        arr[i] += arr[i - 1];
+        cin >> in[i];
+        if (in[i] == i) bad();
+        out[in[i]] = i;
     }
 
-    for (int i = 1; i <= N; i++) {
-        int r = min(i + R, N);
-        int l = max(0, i - R - 1);
-        arr2[i] = arr[r] - arr[l];
-        mx = max(mx, arr2[i]);
-    }
-
-    ll l = 0, r = mx + K + 1;
-    while (l < r) {
-        ll m = (l + r + 1) / 2;
-        if (check(m)) {
-            l = m;
-        } else {
-            r = m - 1;
-        }
-    }
-    cout << l << endl;
+    dfs(1);
+    cout << ans << "\n";
 
     return 0;
 }

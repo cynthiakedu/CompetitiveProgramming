@@ -16,19 +16,13 @@ void bad() {
     exit(0);
 }
 
-int findSet(int x) {
-    return p[x] == x ? x : p[x] = findSet(p[x]);
-}
+int findSet(int x) { return p[x] == x ? x : p[x] = findSet(p[x]); }
 
 void unionSet(int i, int j) {
     int x = findSet(i), y = findSet(j);
     if (x == y) return;
-    if (r[x] < r[y])
-        p[x] = y;
-    else {
-        p[y] = x;
-        if (r[y] == r[x]) r[x]++;
-    }
+    if (r[x] < r[y]) { p[x] = y; }
+    else { p[y] = x; if (r[y] == r[x]) r[x]++; }
 }
 
 void tryUnion(int a, int b, int u) {
