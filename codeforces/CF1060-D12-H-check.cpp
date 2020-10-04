@@ -7,7 +7,7 @@ const int MXN = 100005;
 ll MOD = 1e9 + 7;
 bool debug = false;
 
-ll d = 4, p = 7, arr[5005];
+ll d = 3, p = 5, arr[5005];
 
 ll powmod(ll a, ll b) {
     if (b == 0) return 1;

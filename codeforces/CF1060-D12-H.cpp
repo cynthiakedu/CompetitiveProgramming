@@ -10,13 +10,15 @@ bool debug = false;
 ll d, p, bn[15][15], mat[15][15], coeff[15][15];
 
 ll powmod(ll a, ll b) {
-    if (b == 0) return 1;
-    ll z = powmod(a, b / 2);
-    return z * z % p * (b % 2 ? a : 1) % p;
+    ll ret = 1;
+    for (; b; b >>= 1, a = a * a % p) {
+        if (b & 1) ret = ret * a % p;
+    }
+    return ret;
 }
 
 ll inv(ll a, ll b) {
-    return 1 < a ? b - inv(b % a, a) * b / a : 1;
+    return a > 1 ? b - inv(b % a, a) * b / a : 1;
 }
 
 void prt1(int e1, int e2, int to) {
@@ -29,7 +31,7 @@ void prt2(int e, int to) {
 int ct = 5;
 
 int mult(int init, int m) {
-    if (!m) m = p;
+    if (!m) m = p; //!
     int beg = -1;
     for (int i = 0; i < 32; ++i) {
         int plc = i ? ct + i - 1 : init;
@@ -59,14 +61,14 @@ int main() {
     }
 
     // Solve system of equations
-    for (int i = 1; i <= d; i++) {
-        for (int j = d; j >= 1; j--) {
-            mat[i][d + 1 - j] = bn[d][j] * powmod(i, d - j) % p;
+    for (int i = 1; i <= d; ++i) {
+        for (int j = d; j >= 1; --j) {
+            mat[i][d + 1 - j] = bn[d][j] * powmod(i, d - j) % p; // typo with d + 1 - j (wrote j)
         }
     }
-    for (int i = 1; i <= d; i++) coeff[i][i] = 1LL;
-    for (int i = 1; i <= d; i++) {
-        for (int j = 1; j <= d; j++) {
+    for (int i = 1; i <= d; ++i) coeff[i][i] = 1;
+    for (int i = 1; i <= d; ++i) {
+        for (int j = 1; j <= d; ++j) {
             if (i == j) continue;
             ll m = mat[j][i] * inv(mat[i][i], p) % p;
             for (int k = 1; k <= d; k++) {
@@ -76,14 +78,14 @@ int main() {
         }
     }
     int iv = inv(mat[d - 1][d - 1], p);
-    for (int i = 1; i <= d; i++) {
+    for (int i = 1; i <= d; ++i) {
         coeff[d - 1][i] = (coeff[d - 1][i] * iv) % p;
         if (debug) cout << "COEFF " << i << " " << coeff[d - 1][i] << "\n";
     }
 
     //Perform operations
     prt1(1, 2, 3);
-    int beg[3] = {};
+    int beg[3] = {}; //!
     for (int a = 1; a <= 3; ++a) {
         for (int i = 1; i <= d; ++i) {
             prt1(a, 4, ct);
