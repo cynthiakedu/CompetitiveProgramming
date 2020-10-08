@@ -12,12 +12,14 @@ int main() {
         cin >> N;
         if (N <= 30) {
             cout << "NO" << endl;
-        } else if (N == 36 || N == 40 || N == 44) {
+        }
+        else if (N == 36 || N == 40 || N == 44) {
             cout << "YES" << endl;
-            cout << "6 10 15 " << N - 31 << endl;
-        } else {
+            cout << 6 << " " << 10 << " " << 15 << " " << N - 31 << endl;
+        }
+        else {
             cout << "YES" << endl;
-            cout << "6 10 14 " << N - 30 << endl;
+            cout << 6 << " " << 10 << " " << 14 << " " << N - 30 << endl;
         }
     }
 
